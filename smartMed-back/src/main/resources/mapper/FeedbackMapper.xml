@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.smartmed.mapper.FeedbackMapper">
+    <resultMap id="BaseResultMap" type="Feedback">
+        <id column="feedback_id" property="feedbackId" />
+        <result column="user_id" property="userId" />
+        <result column="content" property="content" />
+        <result column="status" property="status" />
+        <result column="created_at" property="createdAt" />
+    </resultMap>
+
+    <select id="findFeedbacksByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT * FROM feedback WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findFeedbacksByStatus" resultMap="BaseResultMap">
+        SELECT * FROM feedback WHERE status = #{status}
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findAllFeedbacks" resultMap="BaseResultMap">
+        SELECT * FROM feedback
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findFeedbackById" parameterType="java.lang.Integer" resultType="com.dhu.smartmed.entity.Feedback">
+        SELECT *
+        FROM feedback
+        WHERE feedback_id = #{id}
+    </select>
+
+    <insert id="insertFeedback" parameterType="Feedback" useGeneratedKeys="true" keyProperty="feedbackId">
+        INSERT INTO feedback (user_id, content, status)
+        VALUES (#{userId}, #{content}, #{status})
+    </insert>
+
+    <update id="updateFeedbackStatus">
+        UPDATE feedback
+        SET status = #{status}
+        WHERE feedback_id = #{feedbackId}
+    </update>
+
+    <delete id="deleteFeedbackById" parameterType="java.lang.Integer">
+        DELETE FROM feedback WHERE feedback_id = #{feedbackId}
+    </delete>
+</mapper>

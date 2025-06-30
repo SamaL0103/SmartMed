@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.smartmed.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="User">
+        <id column="user_id" property="userId" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="phone" property="phone" />
+        <result column="age" property="age" />
+        <result column="gender" property="gender" />
+        <result column="avatar" property="avatar" />
+        <result column="is_admin" property="isAdmin" />
+        <result column="created_at" property="createdAt" />
+    </resultMap>
+
+    <select id="findUserById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT * FROM users WHERE user_id = #{userId}
+    </select>
+
+    <select id="findUserByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM users WHERE username = #{username}
+    </select>
+
+    <select id="findAllUsers" resultMap="BaseResultMap">
+        SELECT * FROM users
+    </select>
+
+    <select id="findUsersByPage" resultMap="BaseResultMap">
+        SELECT * FROM users LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO users (username, password, phone, age, gender, avatar, is_admin)
+        VALUES (#{username}, #{password}, #{phone}, #{age}, #{gender}, #{avatar}, #{isAdmin})
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE users
+        SET 
+            username = #{username},
+            password = #{password},
+            phone = #{phone},
+            age = #{age},
+            gender = #{gender},
+            avatar = #{avatar},
+            is_admin = #{isAdmin}
+        WHERE user_id = #{userId}
+    </update>
+
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        DELETE FROM users WHERE user_id = #{userId}
+    </delete>
+</mapper>

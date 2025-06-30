@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.smartmed.mapper.MedicinePriceMapper">
+    <resultMap id="BaseResultMap" type="MedicinePrice">
+        <id column="price_id" property="priceId" />
+        <result column="medicine_id" property="medicineId" />
+        <result column="store_name" property="storeName" />
+        <result column="price" property="price" />
+        <result column="specification" property="specification" />
+        <result column="url" property="url" />
+    </resultMap>
+
+    <select id="findPricesByMedicineId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT * FROM medicine_prices WHERE medicine_id = #{medicineId}
+        ORDER BY price ASC
+    </select>
+
+    <insert id="insertPrice" parameterType="MedicinePrice" useGeneratedKeys="true" keyProperty="priceId">
+        INSERT INTO medicine_prices (medicine_id, store_name, price, specification, url)
+        VALUES (#{medicineId}, #{storeName}, #{price}, #{specification}, #{url})
+    </insert>
+
+    <insert id="insertPrices" parameterType="java.util.List">
+        <foreach collection="list" item="price" separator=";">
+            INSERT INTO medicine_prices (medicine_id, store_name, price, specification, url)
+            VALUES (#{price.medicineId}, #{price.storeName}, #{price.price}, #{price.specification}, #{price.url})
+        </foreach>
+    </insert>
+
+    <update id="updatePrice" parameterType="MedicinePrice">
+        UPDATE medicine_prices
+        SET 
+            medicine_id = #{medicineId},
+            store_name = #{storeName},
+            price = #{price},
+            specification = #{specification},
+            url = #{url}
+        WHERE price_id = #{priceId}
+    </update>
+
+    <delete id="deletePrice" parameterType="java.lang.Integer">
+        DELETE FROM medicine_prices WHERE price_id = #{priceId}
+    </delete>
+</mapper>

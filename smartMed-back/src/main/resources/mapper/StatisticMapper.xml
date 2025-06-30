@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.smartmed.mapper.StatisticMapper">
+    <resultMap id="BaseResultMap" type="Statistic">
+        <id column="stat_id" property="statId" />
+        <result column="stat_name" property="statName" />
+        <result column="stat_value" property="statValue" />
+        <result column="last_updated" property="lastUpdated" />
+    </resultMap>
+
+    <select id="findStatisticByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM dashboard_statistics WHERE stat_name = #{statName}
+    </select>
+
+    <select id="findAllStatistics" resultMap="BaseResultMap">
+        SELECT * FROM dashboard_statistics
+    </select>
+
+    <update id="updateStatistic" parameterType="Statistic">
+        UPDATE dashboard_statistics SET stat_value = #{statValue} WHERE stat_name = #{statName}
+    </update>
+
+    <insert id="insertStatistic" parameterType="Statistic">
+        INSERT INTO dashboard_statistics (stat_name, stat_value) VALUES (#{statName}, #{statValue})
+    </insert>
+
+    <update id="updateAllStatistics">
+    CALL update_dashboard_statistics()
+    </update>
+
+    <!-- 用户统计相关查询 -->
+    <select id="countUserAllergies" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user_allergies WHERE user_id = #{userId}
+    </select>
+    
+    <select id="countUserHistories" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user_medical_histories WHERE user_id = #{userId}
+    </select>
+    
+    <select id="countUserChatRecords" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM chat_records WHERE user_id = #{userId}
+    </select>
+    
+    <select id="countUserFeedbacks" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user_feedbacks WHERE user_id = #{userId}
+    </select>
+</mapper>

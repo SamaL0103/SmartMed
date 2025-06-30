@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.smartmed.mapper.AllergyMapper">
+    <resultMap id="BaseResultMap" type="Allergy">
+        <id column="allergy_id" property="allergyId" />
+        <result column="user_id" property="userId" />
+        <result column="allergen" property="allergen" />
+        <result column="description" property="description" />
+    </resultMap>
+
+    <select id="findAllergiesByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT * FROM user_allergies WHERE user_id = #{userId}
+    </select>
+    
+    <insert id="insertAllergy" parameterType="Allergy" useGeneratedKeys="true" keyProperty="allergyId">
+        INSERT INTO user_allergies (user_id, allergen, description)
+        VALUES (#{userId}, #{allergen}, #{description})
+    </insert>
+    
+    <update id="updateAllergy" parameterType="Allergy">
+        UPDATE user_allergies
+        SET 
+            user_id = #{userId},
+            allergen = #{allergen},
+            description = #{description}
+        WHERE allergy_id = #{allergyId}
+    </update>
+    
+    <delete id="deleteAllergy" parameterType="java.lang.Integer">
+        DELETE FROM user_allergies WHERE allergy_id = #{allergyId}
+    </delete>
+
+    <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT *
+        FROM user_allergies
+        WHERE allergy_Id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dhu.smartmed.mapper.MedicineMapper">
+    <resultMap id="BaseResultMap" type="Medicine">
+        <id column="medicine_id" property="medicineId" />
+        <result column="name" property="name" />
+        <result column="category" property="category" />
+        <result column="efficacy" property="efficacy" />
+        <result column="usage_method" property="usageMethod" />
+        <result column="contraindications" property="contraindications" />
+        <result column="side_effects" property="sideEffects" />
+    </resultMap>
+
+    <select id="findMedicineById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT * FROM medicines WHERE medicine_id = #{medicineId}
+    </select>
+
+    <select id="findMedicineByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM medicines WHERE name = #{name}
+    </select>
+
+    <select id="findMedicinesByKeyword" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM medicines WHERE name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <select id="findMedicinesByEfficacy" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM medicines WHERE efficacy LIKE CONCAT('%', #{efficacy}, '%')
+    </select>
+
+    <select id="findAllMedicines" resultMap="BaseResultMap">
+        SELECT * FROM medicines
+    </select>
+
+    <insert id="insertMedicine" parameterType="Medicine" useGeneratedKeys="true" keyProperty="medicineId">
+        INSERT INTO medicines (name, category, efficacy, usage_method, contraindications, side_effects)
+        VALUES (#{name}, #{category}, #{efficacy}, #{usageMethod}, #{contraindications}, #{sideEffects})
+    </insert>
+
+    <update id="updateMedicine" parameterType="Medicine">
+        UPDATE medicines
+        SET 
+            name = #{name},
+            category = #{category},
+            efficacy = #{efficacy},
+            usage_method = #{usageMethod},
+            contraindications = #{contraindications},
+            side_effects = #{sideEffects}
+        WHERE medicine_id = #{medicineId}
+    </update>
+
+    <delete id="deleteMedicine" parameterType="java.lang.Integer">
+        DELETE FROM medicines WHERE medicine_id = #{medicineId}
+    </delete>
+</mapper>
